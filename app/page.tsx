@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, KeyboardEvent } from "react";
 
 type Filter = "all" | "active" | "done";
 
@@ -16,6 +16,7 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const inputRef = useRef<HTMLInputElement>(null);
+  const addBtnRef = useRef<HTMLButtonElement>(null);
 
   const addTask = () => {
     const text = input.trim();
@@ -31,6 +32,15 @@ export default function Home() {
     ]);
     setInput("");
     inputRef.current?.focus();
+  };
+
+  // Tabキーで＋ボタンへフォーカス移動
+  const handleInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      addBtnRef.current?.focus();
+    }
+    // Enterキーは何もしない（登録しない）
   };
 
   const toggleTask = (id: string) => {
@@ -84,11 +94,16 @@ export default function Home() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && addTask()}
+          onKeyDown={handleInputKeyDown}
           placeholder="タスクを入力..."
           maxLength={200}
         />
-        <button className="add-btn" onClick={addTask} aria-label="タスクを追加">
+        <button
+          ref={addBtnRef}
+          className="add-btn"
+          onClick={addTask}
+          aria-label="タスクを追加"
+        >
           +
         </button>
       </div>
