@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, KeyboardEvent } from "react";
+import { useState, useRef, KeyboardEvent, useEffect } from "react";
 
 type Filter = "all" | "active" | "done";
 
@@ -11,12 +11,27 @@ interface Task {
   createdAt: number;
 }
 
+const STORAGE_KEY = "toodo_tasks";
+
 export default function Home() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? (JSON.parse(saved) as Task[]) : [];
+    } catch {
+      return [];
+    }
+  });
   const [input, setInput] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const inputRef = useRef<HTMLInputElement>(null);
   const addBtnRef = useRef<HTMLButtonElement>(null);
+
+  // tasksが変わるたびにlocalStorageへ保存
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  }, [tasks]);
 
   const addTask = () => {
     const text = input.trim();
