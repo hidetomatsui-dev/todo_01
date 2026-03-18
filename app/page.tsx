@@ -85,7 +85,7 @@ export default function Home() {
     <main className="container">
       {/* Header */}
       <div className="header">
-        <h1 className="header-title">Toodo</h1>
+        <h1 className="header-title">Todo<span className="header-version">_v01</span></h1>
         <p className="header-subtitle">今日やることを整理しよう</p>
       </div>
 

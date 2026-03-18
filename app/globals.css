@@ -56,6 +56,14 @@ body {
   color: var(--text-primary);
 }
 
+.header-version {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  margin-left: 4px;
+}
+
 .header-subtitle {
   font-size: 13px;
   color: var(--text-secondary);
